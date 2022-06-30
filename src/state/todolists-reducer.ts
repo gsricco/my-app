@@ -14,7 +14,6 @@ export type ChangeTodolistFilterActionType ={
     id: string,
     filter: FilterValuesType
 }
-
 export type RemoveTodolistActionType ={
     type:'REMOVE-TODOLIST'
     id:string
@@ -22,6 +21,7 @@ export type RemoveTodolistActionType ={
 export type AddTodolistActionType ={
     type:'ADD-TODOLIST'
     title:string
+    todolistId:string
 }
 
 export const todolistsReducer = (state: Array<TodoListType>, action: ActionsType):Array<TodoListType> => {
@@ -31,7 +31,7 @@ export const todolistsReducer = (state: Array<TodoListType>, action: ActionsType
         }
         case 'ADD-TODOLIST': {
             return [
-                {id: v1(), title: action.title, filter: 'all'},
+                {id: action.todolistId, title: action.title, filter: 'all'},
                 ...state];
         }
         case 'CHANGE-TODOLIST-TITLE':{
@@ -51,17 +51,17 @@ export const todolistsReducer = (state: Array<TodoListType>, action: ActionsType
 
 
 
-export const RemoveTodolistAC = (todolistId: string): RemoveTodolistActionType => {
+export const removeTodolistAC = (todolistId: string): RemoveTodolistActionType => {
     return { type: 'REMOVE-TODOLIST', id: todolistId} as const
 }
-export const AddTodolistAC = (title: string): AddTodolistActionType => {
-    return { type: 'ADD-TODOLIST', title: title} as const
+export const addTodolistAC = (title: string): AddTodolistActionType => {
+    return { type: 'ADD-TODOLIST', title: title, todolistId:v1()} as const
 }
-export const ChangeTodolistAC = (title: string, id:string): ChangeTodolistTitleActionType => {
+export const changeTodolistAC = (title: string, id:string): ChangeTodolistTitleActionType => {
     return { type: 'CHANGE-TODOLIST-TITLE', title:title,id:id} as const
 }
 
-export const ChangeTodolistFilterAC = (id:string,filter: FilterValuesType): ChangeTodolistFilterActionType => {
+export const changeTodolistFilterAC = (id:string, filter: FilterValuesType): ChangeTodolistFilterActionType => {
     return { type: 'CHANGE-TODOLIST-FILTER',id:id, filter:filter} as const
 }
 

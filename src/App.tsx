@@ -21,6 +21,10 @@ export type TodoListType = {
     filter: FilterValuesType
 }
 
+export type TasksStateType = {
+    [key:string]:Array<TaskType>
+}
+
 function App() {
     /*const todoListTitle_1 = "What to learn"
     const todoListTitle_2 = "What to buy"
