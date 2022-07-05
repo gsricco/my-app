@@ -7,7 +7,8 @@ type AddItemFormPropsType = {
     addTitle: (newTitle: string) => void
 }
 
-function AddItemForm(props: AddItemFormPropsType) {
+export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
+    console.log("AddItemForm")
     const [newTitle, setNewTitle] = useState("");
     const [error, setError] = useState<string | null>(null);
 
@@ -19,6 +20,9 @@ function AddItemForm(props: AddItemFormPropsType) {
             setError('Title is required')
     }
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (error !== null) {
+            setError(null);
+        }
         setError(null);
         if (e.key === 'Enter') {
             addTitle();
@@ -31,24 +35,19 @@ function AddItemForm(props: AddItemFormPropsType) {
 
     return (
         <div>
-            {/*<input value={newTitle}*/}
-            {/*       onChange={onNewChangeTitleHandler}*/}
-            {/*       onKeyDown={onKeyPressHandler}*/}
-            {/*       className={error ? 'error' : ''}*/}
-            {/*/>*/}
             <TextField value={newTitle}
                        variant={"outlined"}
                        label={"Type value"}
                        error={!!error}
                        helperText={error}
-                   onChange={onNewChangeTitleHandler}
-                   onKeyDown={onKeyPressHandler}
-                   className={error ? 'error' : ''}
+                       onChange={onNewChangeTitleHandler}
+                       onKeyDown={onKeyPressHandler}
+                       className={error ? 'error' : ''}
             />
             <IconButton onClick={addTitle} color={"primary"}><ControlPoint/>
             </IconButton>
 
         </div>
     )
-}
-export default AddItemForm;
+})
+
