@@ -10,7 +10,7 @@
 // export type TaskType = {
 //     id: string,
 //     title: string,
-//     isDone: boolean
+//     status:Stasuses: boolean
 // }
 //
 // export type FilterValuesType = "all" | "completed" | "active";
@@ -31,11 +31,13 @@
 //     const todoListTitle_3 = "What to read"
 //
 //
-//     let [tasksObj, setTasks] = useState<Array<TaskType>>([
-//         {id: v1(), title: "HTML&CSS", isDone: true},
-//         {id: v1(), title: "JS/TS", isDone: true},
-//         {id: v1(), title: "React", isDone: false},
-//         {id: v1(), title: "Redux", isDone: false},
+    import {TaskPriorities, TaskStatuses, TaskType} from "./api/todolists-api";
+
+// let [tasksObj, setTasks] = useState<Array<TaskType>>([
+//         {id: v1(), title: "HTML&CSS", status:Stasuses: true},
+//         {id: v1(), title: "JS/TS", status:Stasuses: true},
+//         {id: v1(), title: "React", status:Stasuses: false},
+//         {id: v1(), title: "Redux", status:Stasuses: false},
 //     ]);
 //     console.log(tasksObj)*/
 //
@@ -48,7 +50,7 @@
 //     }
 //
 //     function addTask(title: string, todolistId: string) {
-//         let newTask = {id: v1(), title: title, isDone: false};
+//         let newTask = {id: v1(), title: title, status:Stasuses: false};
 //         let tasks = tasksObj[todolistId];
 //         let newTasks = [newTask, ...tasks];
 //         tasksObj[todolistId] = newTasks;
@@ -64,11 +66,11 @@
 //
 //     }
 //
-//     function changeStatus(taskId: string, isDone: boolean, todolistId: string) {
+//     function changeStatus(taskId: string, status:Stasuses: boolean, todolistId: string) {
 //         let tasks = tasksObj[todolistId];
 //         let task = tasks.find(t => t.id === taskId);
 //         if (task) {
-//             task.isDone = isDone;
+//             task.status:Stasuses = status:Stasuses;
 //             setTasksObj({...tasksObj});
 //         }
 //     }
@@ -76,11 +78,11 @@
 //     let todolistId1 = v1();
 //     let todolistId2 = v1();
 //
-//     let [todolists, setTodolists] = useState<Array<TodoListType>>([
-//         {id: todolistId1, title: 'What to learn', filter: 'all'},
-//         {id: todolistId2, title: 'What to buy', filter: 'all'}
+//     let [todolists, setTodolists] = useState<Array<TodoListDomainType>>([
+//         {id: todolistId1, title: 'What to learn', filter: 'all',order:0, addedDate:''},
+//         {id: todolistId2, title: 'What to buy', filter: 'all',order:0, addedDate:''}
 //     ])
-//
+
 //     let removeTodolist = (todolistId: string) => {
 //         let filteredTodolist = todolists.filter(tl => tl.id !== todolistId);
 //         setTodolists(filteredTodolist);
@@ -88,16 +90,32 @@
 //         setTasksObj({...tasksObj});
 //     }
 //
+//
+/*[todolistId1]: [
+    {id: v1(), title: "HTML&CSS", status:TaskStatuses.Completed, todoListId:todolistId1,description:'',startDate:'',deadline:'',addedDate'',order:0,priority:TaskPriorities.Low},
+    {id: v1(), title: "JS/TS", status:TaskStatuses.New, todoListId:todolistId1,description:'',startDate:'',deadline:'',addedDate'',order:0,priority:TaskPriorities.Low},
+    {id: v1(), title: "React", status:TaskStatuses.Completed, todoListId:todolistId1,description:'',startDate:'',deadline:'',addedDate'',order:0,priority:TaskPriorities.Low},
+    {id: v1(), title: "Redux", status:TaskStatuses.Completed, todoListId:todolistId1,description:'',startDate:'',deadline:'',addedDate'',order:0,priority:TaskPriorities.Low},
+],
+    [todolistId2]: [
+    {id: v1(), title: "Book", status:TaskStatuses.Completed, todoListId:todolistId2,description:'',startDate:'',deadline:'',addedDate'',order:0,priority:TaskPriorities.Low},
+    {id: v1(), title: "Milk", status:TaskStatuses.Completed, todoListId:todolistId2,description:'',startDate:'',deadline:'',addedDate'',order:0,priority:TaskPriorities.Low},
+],
+})*/
+
+
+
+
 //     let [tasksObj, setTasksObj] = useState({
 //         [todolistId1]: [
-//             {id: v1(), title: "HTML&CSS", isDone: true},
-//             {id: v1(), title: "JS/TS", isDone: true},
-//             {id: v1(), title: "React", isDone: false},
-//             {id: v1(), title: "Redux", isDone: false},
+//             {id: v1(), title: "HTML&CSS", status:Stasuses: true},
+//             {id: v1(), title: "JS/TS", status:Stasuses: true},
+//             {id: v1(), title: "React", status:Stasuses: false},
+//             {id: v1(), title: "Redux", status:Stasuses: false},
 //         ],
 //         [todolistId2]: [
-//             {id: v1(), title: "Book", isDone: false},
-//             {id: v1(), title: "Milk", isDone: true},
+//             {id: v1(), title: "Book", status:Stasuses: false},
+//             {id: v1(), title: "Milk", status:Stasuses: true},
 //         ],
 //     })
 //
@@ -142,10 +160,10 @@
 //
 //                         let tasksForTodolist = tasksObj[tl.id];
 //                         if (tl.filter === "completed") {
-//                             tasksForTodolist = tasksForTodolist.filter(t => t.isDone);
+//                             tasksForTodolist = tasksForTodolist.filter(t => t.status:Stasuses);
 //                         }
 //                         if (tl.filter === "active") {
-//                             tasksForTodolist = tasksForTodolist.filter(t => !t.isDone);
+//                             tasksForTodolist = tasksForTodolist.filter(t => !t.status:Stasuses);
 //                         }
 //
 //

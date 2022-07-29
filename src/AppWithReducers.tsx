@@ -18,7 +18,7 @@
 // export type TaskType = {
 //     id: string,
 //     title: string,
-//     isDone: boolean
+//     status:Stasuses: boolean
 // }
 //
 // export type FilterValuesType = "all" | "completed" | "active";
@@ -45,14 +45,14 @@
 //
 //     let [tasksObj, dispatchToTasksReducer] = useReducer(tasksReducer, {
 //         [todolistId1]: [
-//             {id: v1(), title: "HTML&CSS", isDone: true},
-//             {id: v1(), title: "JS/TS", isDone: true},
-//             {id: v1(), title: "React", isDone: false},
-//             {id: v1(), title: "Redux", isDone: false},
+//             {id: v1(), title: "HTML&CSS", status:Stasuses: true},
+//             {id: v1(), title: "JS/TS", status:Stasuses: true},
+//             {id: v1(), title: "React", status:Stasuses: false},
+//             {id: v1(), title: "Redux", status:Stasuses: false},
 //         ],
 //         [todolistId2]: [
-//             {id: v1(), title: "Book", isDone: false},
-//             {id: v1(), title: "Milk", isDone: true},
+//             {id: v1(), title: "Book", status:Stasuses: false},
+//             {id: v1(), title: "Milk", status:Stasuses: true},
 //         ],
 //     })
 //
@@ -68,21 +68,21 @@
 //     function addTask(title: string, todolistId: string) {
 //         let action = addTaskAC(title, todolistId);
 //         dispatchToTasksReducer(action);
-//         // let newTask = {id: v1(), title: title, isDone: false};
+//         // let newTask = {id: v1(), title: title, status:Stasuses: false};
 //         // let tasks = tasksObj[todolistId];
 //         // let newTasks = [newTask, ...tasks];
 //         // tasksObj[todolistId] = newTasks;
 //         // setTasksObj({...tasksObj});
 //     }
 //
-//     function changeStatus(taskId: string, isDone: boolean, todolistId: string) {
-//         let action = changeTaskStatusAC(taskId, isDone, todolistId);
+//     function changeStatus(taskId: string, status:Stasuses: boolean, todolistId: string) {
+//         let action = changeTaskStatusAC(taskId, status:Stasuses, todolistId);
 //         dispatchToTasksReducer(action);
 //         //
 //         // let tasks = tasksObj[todolistId];
 //         // let task = tasks.find(t => t.id === taskId);
 //         // if (task) {
-//         //     task.isDone = isDone;
+//         //     task.status:Stasuses = status:Stasuses;
 //         //     setTasksObj({...tasksObj});
 //     }
 //
@@ -160,10 +160,10 @@
 //
 //                         let tasksForTodolist = tasksObj[tl.id];
 //                         if (tl.filter === "completed") {
-//                             tasksForTodolist = tasksForTodolist.filter(t => t.isDone);
+//                             tasksForTodolist = tasksForTodolist.filter(t => t.status:Stasuses);
 //                         }
 //                         if (tl.filter === "active") {
-//                             tasksForTodolist = tasksForTodolist.filter(t => !t.isDone);
+//                             tasksForTodolist = tasksForTodolist.filter(t => !t.status:Stasuses);
 //                         }
 //
 //
