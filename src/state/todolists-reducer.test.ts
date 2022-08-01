@@ -2,7 +2,7 @@ import {
     addTodolistAC,
     changeTodolistAC,
     changeTodolistFilterAC,
-    removeTodolistAC,
+    removeTodolistAC, setTodolistsAC,
     todolistsReducer
 } from './todolists-reducer';
 import {v1} from 'uuid';
@@ -95,3 +95,14 @@ test('correct filter of todolist should be changed', () => {
 
 
 */
+test('should be set todolists to the state', () => {
+    const startState: Array<TodolistType> = [
+        {id: 'todolistId1', title: "What to learn", addedDate: 'string',order: 0},
+        {id: 'todolistId2', title: "What to buy", addedDate: 'string',order: 0}
+    ]
+    const action = setTodolistsAC(startState)
+
+    const endState = todolistsReducer([], action);
+
+    expect(endState.length).toBe(2);
+});
