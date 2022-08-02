@@ -1,8 +1,8 @@
-import {Page} from "./stories/Page";
+import {Page} from "../../stories/Page";
 import React from 'react'
-import {AddItemForm} from "./AddItemForm";
+import {AddItemForm} from "../AddItemForm/AddItemForm";
 import {action} from '@storybook/addon-actions'
-import {Task} from "./Task";
+import {Task} from "../Task/Task";
 import {EditableSpan} from "./EditableSpan";
 
 

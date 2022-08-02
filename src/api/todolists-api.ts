@@ -1,5 +1,4 @@
 import axios from "axios";
-import {CreateTodolist} from "../stories/todolists-api.stories";
 
 
 const setting = {
@@ -58,7 +57,7 @@ export enum TaskPriorities {
 //     data: {}
 // }
 
-type ResponseType<D ={}> = {
+export type ResponseType<D ={}> = {
     resultCode: number
     messages: string[],
     data: D

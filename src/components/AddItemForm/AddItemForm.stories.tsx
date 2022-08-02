@@ -1,4 +1,4 @@
-import {Page} from "./stories/Page";
+import {Page} from "../../stories/Page";
 import React from 'react'
 import {AddItemForm} from "./AddItemForm";
 import {action} from '@storybook/addon-actions'
@@ -12,5 +12,5 @@ export default {
 const callback = action('Button "add" was pressed inside the form');
 
 export const AddItemFormBaseExample = ()=>{
-    return <AddItemForm addTitle={callback }/>
+    return <AddItemForm disabled={true} addTitle={callback }/>
 }

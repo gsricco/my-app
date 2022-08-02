@@ -1,20 +1,20 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
-import App from "./App";
-import {Button, IconButton, TextField} from "@material-ui/core";
+import {IconButton, TextField} from "@material-ui/core";
 import {ControlPoint} from "@material-ui/icons";
 
 type AddItemFormPropsType = {
     addTitle: (newTitle: string) => void
+    disabled?: boolean
 }
 
-export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
+export const AddItemForm = React.memo(({addTitle, disabled = false}: AddItemFormPropsType) => {
     console.log("AddItemForm")
     const [newTitle, setNewTitle] = useState("");
     const [error, setError] = useState<string | null>(null);
 
-    const addTitle = () => {
+    const addTitleHandler = () => {
         if (newTitle.trim() !== "") {
-            props.addTitle(newTitle.trim());
+            addTitle(newTitle.trim());
             setNewTitle("");
         } else
             setError('Title is required')
@@ -25,7 +25,7 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
         }
         setError(null);
         if (e.key === 'Enter') {
-            addTitle();
+            addTitleHandler();
         }
     }
     const onNewChangeTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -43,8 +43,9 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
                        onChange={onNewChangeTitleHandler}
                        onKeyDown={onKeyPressHandler}
                        className={error ? 'error' : ''}
+                       disabled={disabled}
             />
-            <IconButton onClick={addTitle} color={"primary"}><ControlPoint/>
+            <IconButton onClick={addTitleHandler} color={"primary"} disabled={disabled}><ControlPoint/>
             </IconButton>
 
         </div>

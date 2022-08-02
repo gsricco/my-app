@@ -1,13 +1,9 @@
-import {v1} from "uuid";
-import {
-    AddTodolistActionType,
-    RemoveTodolistActionType,
-    setTodolistsAC,
-    SetTodolistsActionType
-} from "./todolists-reducer";
-import {TasksStateType} from "../AppWithRedux";
+import {AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType} from "./todolists-reducer";
+import {TasksStateType} from "../app/AppWithRedux";
 import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelType} from "../api/todolists-api";
 import {AppRootState, AppThunkType} from "./store";
+import {setAppStatusAC} from "../app/app-reducer";
+import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 
 
 export type RemoveTaskActionType = {
@@ -20,7 +16,7 @@ export type AddTaskActionType = {
     type: 'ADD-TASK',
     // todolistId: string,
     // title: string
-    task:TaskType
+    task: TaskType
 }
 
 export type UpdateChangeTaskActionType = {
@@ -60,23 +56,23 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Tasks
                     action.task, ...state[action.task.todoListId]]
             }
         }
-    //     {
-    //     ...state,
-    //         [action.todolistId]: [
-    //         {
-    //             id: v1(),
-    //             title: action.title,
-    //             status: TaskStatuses.New,
-    //             description: '',
-    //             priority: 0,
-    //             startDate: '',
-    //             deadline: '',
-    //             todoListId: action.todolistId,
-    //             order: 0,
-    //             addedDate: 'string',
-    //         }, ...state[action.todolistId]]
-    //     }
-    // }
+        //     {
+        //     ...state,
+        //         [action.todolistId]: [
+        //         {
+        //             id: v1(),
+        //             title: action.title,
+        //             status: TaskStatuses.New,
+        //             description: '',
+        //             priority: 0,
+        //             startDate: '',
+        //             deadline: '',
+        //             todoListId: action.todolistId,
+        //             order: 0,
+        //             addedDate: 'string',
+        //         }, ...state[action.todolistId]]
+        //     }
+        // }
         case "UPDATE-TASK": {
             const stateCopy = {...state}
             let tasks = stateCopy[action.todolistId];
@@ -108,9 +104,9 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Tasks
             })
             return stateCopy;
         }
-        case "SET-TASKS":{
+        case "SET-TASKS": {
             const copyState = {...state}
-            copyState[action.todolistId]=action.tasks
+            copyState[action.todolistId] = action.tasks
             return copyState
         }
         default:
@@ -126,8 +122,7 @@ export const removeTaskAC = (taskId: string, todolistId: string): RemoveTaskActi
 // }
 
 
-
-export const addTaskAC = (task:TaskType): AddTaskActionType => {
+export const addTaskAC = (task: TaskType): AddTaskActionType => {
     return {type: 'ADD-TASK', task} as const
 }
 // export const addTaskAC = (title: string, todolistId: string): AddTaskActionType => {
@@ -138,11 +133,9 @@ export const addTaskAC = (task:TaskType): AddTaskActionType => {
 //     return {type: 'CHANGE-TASK-STATUS', status, todolistId, taskId} as const
 // }
 
-export const updateTaskAC = (taskId: string, model:UpdateDomainTaskModelType, todolistId: string): UpdateChangeTaskActionType => {
+export const updateTaskAC = (taskId: string, model: UpdateDomainTaskModelType, todolistId: string): UpdateChangeTaskActionType => {
     return {type: 'UPDATE-TASK', model, todolistId, taskId} as const
 }
-
-
 
 
 export const changeTaskTitleAC = (taskId: string, title: string, todolistId: string): ChangeTaskTitleActionType => {
@@ -157,31 +150,46 @@ export const setTaskAC = (tasks: Array<TaskType>, todolistId: string) => {
 }
 
 
-export const fetchTasksTC = (todolistId:string):AppThunkType=>{
+export const fetchTasksTC = (todolistId: string): AppThunkType => {
     return (dispatch) => {
+        dispatch(setAppStatusAC('loading'))
         todolistsAPI.getTasks(todolistId)
             .then((res) => {
-                dispatch(setTaskAC(res.data.items,todolistId))
+                dispatch(setTaskAC(res.data.items, todolistId))
+                dispatch(setAppStatusAC('succeeded'))
             })
+        // .catch((error) => {
+        //     dispatch(setAppErrorAC(error.message))
+        //     dispatch(setAppStatusAC('failed'))
+        // })
     }
 }
 
-export const removeTaskTC=(todolistId:string,taskId:string):AppThunkType=>{
-    return (dispatch)=>{
-        todolistsAPI.deleteTask(todolistId,taskId)
-            .then(res=>{
+export const removeTaskTC = (todolistId: string, taskId: string): AppThunkType => {
+    return (dispatch) => {
+        todolistsAPI.deleteTask(todolistId, taskId)
+            .then(res => {
                 const action = removeTaskAC(taskId, todolistId);
                 dispatch(action);
             })
     }
 }
 
-export const addTaskTC=(title:string,todolistId:string):AppThunkType=>{
-    return (dispatch)=>{
-        todolistsAPI.createTask(todolistId,title)
-            .then(res=>{
-                const action = addTaskAC(res.data.data.item);
-                dispatch(action);
+export const addTaskTC = (title: string, todolistId: string): AppThunkType => {
+    return (dispatch) => {
+        dispatch(setAppStatusAC('loading'))
+        todolistsAPI.createTask(todolistId, title)
+            .then(res => {
+                if (res.data.resultCode === 0) {
+                    const action = addTaskAC(res.data.data.item);
+                    dispatch(action);
+                    dispatch(setAppStatusAC('succeeded'))
+                } else {
+                    handleServerAppError(res.data, dispatch);
+                }
+            })
+            .catch((error) => {
+                handleServerNetworkError(error, dispatch);
             })
     }
 }
@@ -238,7 +246,7 @@ export const changeTaskTitleTC=(taskId: string,title: string, todolistId: string
     }
 }*/
 // вместо этого одни санки апдейт
-export type UpdateDomainTaskModelType ={
+export type UpdateDomainTaskModelType = {
     title?: string
     description?: string
     status?: TaskStatuses
@@ -248,16 +256,16 @@ export type UpdateDomainTaskModelType ={
 }
 
 
-export const updateTaskTC=(taskId: string, domainModel:UpdateDomainTaskModelType,todolistId: string ):AppThunkType=>{
-    return (dispatch,getState:()=>AppRootState)=>{
+export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelType, todolistId: string): AppThunkType => {
+    return (dispatch, getState: () => AppRootState) => {
         const state = getState();
-        const task = state.tasks[todolistId].find(t=>t.id===taskId)
-        if(!task){
+        const task = state.tasks[todolistId].find(t => t.id === taskId)
+        if (!task) {
             // throw new Error('task not found in the state')
             console.warn('task not found in the state')
             return
         }
-        const apiModel:UpdateTaskModelType={
+        const apiModel: UpdateTaskModelType = {
             title: task.title,
             description: task.description,
             status: task.status,
@@ -267,12 +275,20 @@ export const updateTaskTC=(taskId: string, domainModel:UpdateDomainTaskModelType
             ...domainModel
         }
 
-        todolistsAPI.updateTask(todolistId,taskId,apiModel)
-            .then(res=>{
-                const action = updateTaskAC(taskId, domainModel, todolistId);
-                dispatch(action);
+        todolistsAPI.updateTask(todolistId, taskId, apiModel)
+            .then(res => {
+                if (res.data.resultCode === 0) {
+                    const action = updateTaskAC(taskId, domainModel, todolistId);
+                    dispatch(action);
+                } else {
+                    handleServerAppError(res.data, dispatch);
+                }
+            })
+            .catch((error) => {
+                handleServerNetworkError(error, dispatch);
             })
     }
+
 }
 
 

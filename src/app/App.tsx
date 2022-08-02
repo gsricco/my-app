@@ -31,7 +31,7 @@
 //     const todoListTitle_3 = "What to read"
 //
 //
-    import {TaskPriorities, TaskStatuses, TaskType} from "./api/todolists-api";
+    import {TaskPriorities, TaskStatuses, TaskType} from "../api/todolists-api";
 
 // let [tasksObj, setTasks] = useState<Array<TaskType>>([
 //         {id: v1(), title: "HTML&CSS", status:Stasuses: true},
